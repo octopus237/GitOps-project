@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-deployment
+  labels:
+    run: node-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: node
+  template:
+    metadata:
+      labels:
+        run: node
+    spec:
+      containers:
+      - name: node-app
+        image: jobri237/lab4-app:1
+        ports:
+        - containerPort: 80
+        envFrom:
+          - secretRef:
+              name: mongo-secret
+        env:
+          - name: MONGO_DB_ADD
+            valueFrom:
+              configMapKeyRef:
+                name: db-config
+                key: MONGO_DB_ADD
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+  labels:
+    run: mongo-depl
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      run: mongodb
+  template:
+    metadata:
+      labels:
+        run: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo
+        ports:
+        - containerPort: 27017
+        envFrom:
+          - secretRef:
+              name: mongo-secret
