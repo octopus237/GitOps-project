@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('install git') {
       steps {
-        sh ' cat /etc/os-release'
+        sh ' whoami && cat /etc/group'
       }
     }
 
