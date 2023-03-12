@@ -3,8 +3,8 @@ pipeline {
   stages {
     stage('install git') {
       steps {
-        sh '''sudo apt update 
-&&  sudo apt install git'''
+        sh ''' apt update 
+&&  apt install git'''
       }
     }
 
