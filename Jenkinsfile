@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('install git') {
+    stage('checkout') {
       steps {
-        sh 'git --version'
+        git(url: 'https://github.com/octopus237/GitOps-project', branch: 'dev')
       }
     }
 
