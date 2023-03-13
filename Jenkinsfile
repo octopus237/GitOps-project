@@ -9,21 +9,8 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh '''pipeline {
-    agent any
-
-    environment {
-        AZURE_SUBSCRIPTION_ID=\'99999999-9999-9999-9999-99999999\'
-        AZURE_TENANT_ID=\'99999999-9999-9999-9999-99999999\'
-        CONTAINER_REGISTRY=\'container registry name\'
-        RESOURCE_GROUP=\'resource group\'
-        REPO="repo name"
-        IMAGE_NAME="image name"
-        TAG="tag"
-    }
-
-    stages {
-        stage(\'Example\') {
+        sh '''
+        stage(\'Build-docker-image\') {
             steps {
                 withCredentials([usernamePassword(credentialsId: \'myAzureCredential\', passwordVariable: \'AZURE_CLIENT_SECRET\', usernameVariable: \'AZURE_CLIENT_ID\')]) {
                             sh \'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID\'
@@ -32,12 +19,10 @@ pipeline {
                             sh \'az acr build --image $REPO/$IMAGE_NAME:$TAG --registry $CONTAINER_REGISTRY --file Dockerfile . \'
                         }
             }
-        }
-    }
-}'''
-          sh 'echo test'
-        }
+      '''
+        sh 'echo test'
       }
-
     }
+
   }
+}
