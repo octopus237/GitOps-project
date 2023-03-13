@@ -5,7 +5,6 @@ pipeline {
       steps {
         script {
 
-          agent any
           environment {
             AZURE_SUBSCRIPTION_ID='99999999-9999-9999-9999-99999999'
             AZURE_TENANT_ID='99999999-9999-9999-9999-99999999'
