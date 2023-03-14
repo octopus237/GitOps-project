@@ -1,5 +1,4 @@
 pipeline {
- main
     agent any
     environment{
         DOCKERHUB_USENAME = "jobri237"
