@@ -1,30 +1,37 @@
 pipeline {
-  agent any
-  environment {
-            AZURE_SUBSCRIPTION_ID='99999999-9999-9999-9999-99999999'
-            AZURE_TENANT_ID='99999999-9999-9999-9999-99999999'
-            CONTAINER_REGISTRY='container registry name'
-            RESOURCE_GROUP='resource group'
-            REPO="repo name"
-            IMAGE_NAME="image name"
-            TAG="tag"
-          }
-  stages {
-    stage('checkout') {
-      steps {
-        script {
-          git(url: 'https://github.com/octopus237/GitOps-project', branch: 'dev')
-        }
-          }
+ main
+    agent any
+    environment{
+        DOCKERHUB_USENAME = "jobri237"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        IMAGE_NAME = "${DOCKERHUB_USENAME}" + "/" + "${APP_NAME}"
+        REGISTRY_CREDS = 'docker-hub'
     }
-    stage('Build') {
-      steps {
-                 withCredentials([usernamePassword(credentialsId: 'myAzureCredential', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
-                  sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
-                  sh 'az account set -s $AZURE_SUBSCRIPTION_ID'
-                  sh 'az acr login --name $CONTAINER_REGISTRY --resource-group $RESOURCE_GROUP'
-                  sh 'az acr build --image $REPO/$IMAGE_NAME:$TAG --registry $CONTAINER_REGISTRY --file Dockerfile . '
-                }
-              }
+
+    stages {
+        stage('Checkout to dev') {
+            steps {
+                git branch: 'dev', url: 'https://github.com/octopus237/GitOps-project'
             }
-          }
+        }
+        
+        stage('Build image') {
+            steps {
+                script{
+                    docker_image = docker.build "${IMAGE_NAME}"
+                }
+            }
+        
+        stage('Push image') {
+            steps {
+                script{
+                    docker.withRegistry('', REGISTRY_CREDS) {
+                        docker_image.push("${BUILD_NUMBER}")
+                        docker_image.push('latest')
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
