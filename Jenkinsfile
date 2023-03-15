@@ -6,21 +6,29 @@ pipeline {
         IMAGE_NAME = "${DOCKERHUB_USENAME}" + "/" + "${APP_NAME}"
         REGISTRY_CREDS = 'docker-hub'
     }
-
+    
     stages {
+        stage('Cleanup Workspace'){
+            steps {
+                script {
+                    cleanWs()
+                }
+            }
+        }
+
         stage('Checkout to dev') {
             steps {
                 git branch: 'dev', url: 'https://github.com/octopus237/GitOps-project'
             }
+
         }
-        
         stage('Build image') {
             steps {
                 script{
                     docker_image = docker.build "${IMAGE_NAME}"
                 }
             }
-        
+        }
         stage('Push image') {
             steps {
                 script{
@@ -33,4 +41,3 @@ pipeline {
                 }
             }
         }
-    }
