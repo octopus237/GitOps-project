@@ -18,7 +18,7 @@ pipeline {
 
         stage('Checkout to dev') {
             steps {
-                git branch: 'main', url: 'https://github.com/octopus237/GitOps-project'
+                git branch: 'dev', url: 'https://github.com/octopus237/GitOps-project'
             }
 
         }
