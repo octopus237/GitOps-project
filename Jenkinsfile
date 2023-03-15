@@ -48,7 +48,7 @@ pipeline {
         
         stage('Trigger CD pipeline') {
             steps {
-                sh "echo test"
+                build job: 'CD-PIPELINE', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
                 
             }
         }
