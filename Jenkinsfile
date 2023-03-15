@@ -48,6 +48,7 @@ pipeline {
         
         stage('Trigger CD pipeline') {
             steps {
+                sh "echo test"
                 
             }
         }
