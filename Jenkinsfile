@@ -3,7 +3,7 @@ pipeline {
     environment{
         DOCKERHUB_USENAME = "jobri237"
         IMAGE_TAG = "${BUILD_NUMBER}"
-        IMAGE_NAME = "${DOCKERHUB_USENAME}" + "/" + "${APP_NAME}"
+        IMAGE_NAME = "${DOCKERHUB_USENAME}" + "/" + "ls-project"
         REGISTRY_CREDS = 'docker-hub'
     }
     
@@ -20,6 +20,7 @@ pipeline {
             steps {
                 git branch: 'dev', url: 'https://github.com/octopus237/GitOps-project'
             }
+
         }
         stage('Build image') {
             steps {
@@ -32,13 +33,12 @@ pipeline {
             steps {
                 script{
                     docker.withRegistry('', REGISTRY_CREDS) {
-                        docker_image.push("${BUILD_NUMBER}")
+                        docker_image.push("${IMAGE_TAG}")
                         docker_image.push('latest')
                             }
                         }
                     }
                 }
-        
         stage('Delete local image') {
                 steps {
                     sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
@@ -52,6 +52,5 @@ pipeline {
             }
         }
         
-          
-  }
-}
+      }   
+ }
