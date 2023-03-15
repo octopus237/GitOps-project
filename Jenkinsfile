@@ -6,6 +6,15 @@ pipeline {
         IMAGE_NAME = "${DOCKERHUB_USENAME}" + "/" + "${APP_NAME}"
         REGISTRY_CREDS = 'docker-hub'
     }
+    
+    stages {
+        stage('Cleanup Workspace'){
+            steps {
+                script {
+                    cleanWs()
+                }
+            }
+        }
 
     stages {
         stage('Checkout to dev') {
