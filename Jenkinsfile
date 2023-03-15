@@ -16,12 +16,11 @@ pipeline {
             }
         }
 
-    stages {
         stage('Checkout to dev') {
             steps {
                 git branch: 'dev', url: 'https://github.com/octopus237/GitOps-project'
             }
-        }
+
         
         stage('Build image') {
             steps {
