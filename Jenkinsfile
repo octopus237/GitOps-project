@@ -45,5 +45,12 @@ pipeline {
                     sh "docker rmi ${IMAGE_NAME}:latest" 
                 }
             }
-        }   
+        
+        stage('Trigger CD pipeline') {
+            steps {
+                
+            }
+        }
+        
+      }   
  }
