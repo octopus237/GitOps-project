@@ -46,8 +46,17 @@ pipeline {
                 }
             }
         
+        stage('Updating Kubernetes deployment file'){
+            steps {
+                sh "cat deployment.yaml"
+                sh "sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' deployment.yaml"
+                sh "cat deployment.yaml"
+            }
+        }
+        
         stage('Trigger CD pipeline') {
             steps {
+                build job: 'CD Pipeline', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
                 
             }
         }
