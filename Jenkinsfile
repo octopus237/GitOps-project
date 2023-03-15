@@ -20,7 +20,6 @@ pipeline {
             steps {
                 git branch: 'dev', url: 'https://github.com/octopus237/GitOps-project'
             }
-
         }
         stage('Build image') {
             steps {
@@ -39,5 +38,13 @@ pipeline {
                         }
                     }
                 }
+        
+        stage('Trigger CD pipeline') {
+            steps {
+                
             }
         }
+        
+          
+  }
+}
