@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'node:16-alpine' }
-    }
+    agent any
     environment{
         DOCKERHUB_USENAME = "jobri237"
         IMAGE_TAG = "${BUILD_NUMBER}"
