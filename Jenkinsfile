@@ -21,14 +21,14 @@ pipeline {
                 git branch: 'dev', url: 'https://github.com/octopus237/GitOps-project'
             }
 
-        
+        }
         stage('Build image') {
             steps {
                 script{
                     docker_image = docker.build "${IMAGE_NAME}"
                 }
             }
-        
+        }
         stage('Push image') {
             steps {
                 script{
@@ -41,4 +41,3 @@ pipeline {
                 }
             }
         }
-    }
