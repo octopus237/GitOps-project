@@ -5,7 +5,7 @@ pipeline {
     environment{
         DOCKERHUB_USENAME = "jobri237"
         IMAGE_TAG = "${BUILD_NUMBER}"
-        IMAGE_NAME = "${DOCKERHUB_USENAME}" + "/" + "ls-project"
+        IMAGE_NAME = "${DOCKERHUB_USENAME}" + "/" + "ls-gitops"
         REGISTRY_CREDS = 'docker-hub'
     }
     
