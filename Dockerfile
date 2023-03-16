@@ -9,7 +9,7 @@ COPY flask/requirements.txt .
 RUN pip install -r requirements.txt
 
 #Copy the Flask app code to the working directory
-COPY . .
+COPY ./flask/ .
 #Run the container
 EXPOSE 2000
 CMD [ "python", "./app.py" ]
