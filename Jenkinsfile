@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment{
         DOCKERHUB_USENAME = "jobri237"
-        IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT}"
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
         IMAGE_NAME = "${DOCKERHUB_USENAME}" + "/" + "ls-gitops"
         REGISTRY_CREDS = 'docker-hub'
     }
