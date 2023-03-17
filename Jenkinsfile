@@ -53,25 +53,46 @@ pipeline {
             }
         }
         
-        stage('Trigger Github actions'){
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-                    withCredentials([usernamePassword(credentialsId: 'my-github', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
-                        sh "git config user.email jobri237@gmail.com"
-                        sh "git config user.name octopus237"
-                        sh " rm -rf LS-Project"
-                        sh "git clone https://github.com/husseinahmed-dev/LS-Project.git"
-                        sh "cd LS-Project/argocd/"
-                        sh "touch jenkins"
-                        sh "echo 'jenkins trigger github actions' > jenkins"
-                        sh "git add ."
-                        sh "git commit -m 'jenkins file uploaded'"
-                      
-                        sh "git push https://${GIT_USER}:${GIT_PASS}@github.com/${GIT_USER}/LS-Project.git"
+        stage('trigger github actions'){
+            steps{
+                script{
+                    if (fileExists('LS-Project')){
+                        echo 'repo exists'
+                        dir ('LS-Project'){
+                            sh 'git pull'
+                        }
+                        
                     }
-                 }
+                    else {
+                        echo 'cloning repo'
+                        withCredentials([usernamePassword(credentialsId: 'my-github', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+                        sh "git clone https://github.com/husseinahmed-dev/LS-Project.git"
+                        }
+                    }                   
+                }
             }
         }
         
+        stage ('update repo'){
+            steps{
+                dir("LS-Project/argocd"){
+                    sh 'touch jenkins'
+                    sh 'echo 'trigger actions by jenkins' > jenkins'
+                }
+            }
+        }
+       
+        stage('Commit and push'){
+            steps {
+                dir("LS-Project/argocd"){
+                    sh "git config user.email jobri237@gmail.com"
+                    sh "git config user.name octopus237"
+                    sh "git remote set-url origin https://github.com/husseinahmed-dev/LS-Project.git"
+                    sh 'git add -A'
+                    sh "git commit -am 'jenkins file uploaded'" 
+                    sh 'git push origin main'
+                }
+            }
+        }
      }   
  }
