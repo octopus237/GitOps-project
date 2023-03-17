@@ -59,13 +59,14 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'my-github', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
                         sh "git config user.email jobri237@gmail.com"
                         sh "git config user.name octopus237"
+                        sh " rm -rf LS-Project"
                         sh "git clone https://github.com/husseinahmed-dev/LS-Project.git"
                         sh "cd LS-Project/argocd/"
                         sh "touch jenkins"
                         sh "echo 'jenkins trigger github actions' > jenkins"
                         sh "git add ."
                         sh "git commit -m 'jenkins file uploaded'"
-                        sh "git pull https://github.com/husseinahmed-dev/LS-Project.git"
+                      
                         sh "git push https://${GIT_USER}:${GIT_PASS}@github.com/${GIT_USER}/LS-Project.git"
                     }
                  }
