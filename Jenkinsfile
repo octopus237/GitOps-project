@@ -54,7 +54,7 @@ pipeline {
             }
         }
         
-        stage('trigger github actions'){
+        stage('Clone or pull Github actions repo'){
             steps{
                 script{
                     if (fileExists('LS-Project')){
@@ -62,7 +62,6 @@ pipeline {
                         dir ('LS-Project'){
                             sh 'git pull'
                         }
-                        
                     }
                     else {
                         echo 'cloning repo'
@@ -74,16 +73,16 @@ pipeline {
             }
         }
         
-        stage ('update repo'){
+        stage ('update Github actions repo'){
             steps{
                 dir("LS-Project/argocd"){
                     sh 'touch jenkins'
-                    sh "echo 'trigger actions by jenkins' > jenkins"
+                    sh "echo 'trigger actions by jenkins ${GIT_COMMIT}' > jenkins"
                 }
             }
         }
        
-        stage('Commit and push'){
+        stage('Commit and push to Github actions repo'){
             steps {
                 dir("LS-Project/argocd"){
                     sh "git config user.email jobri237@gmail.com"
