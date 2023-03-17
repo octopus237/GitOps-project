@@ -87,7 +87,7 @@ pipeline {
                 dir("LS-Project/argocd"){
                     sh "git config user.email jobri237@gmail.com"
                     sh "git config user.name octopus237"
-                    sh "git remote set-url origin https://$my-github@github.com/husseinahmed-dev/LS-Project.git"
+                    sh "git remote set-url origin https://octopus237@github.com/husseinahmed-dev/LS-Project.git"
                     sh 'git add -A'
                     sh "git commit -am 'jenkins file uploaded'" 
                     sh 'git push origin main'
