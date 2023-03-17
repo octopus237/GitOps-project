@@ -77,7 +77,7 @@ pipeline {
             steps{
                 dir("LS-Project/argocd"){
                     sh 'touch jenkins'
-                    sh 'echo 'trigger actions by jenkins' > jenkins'
+                    sh "echo 'trigger actions by jenkins' > jenkins"
                 }
             }
         }
